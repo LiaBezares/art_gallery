@@ -1,0 +1,41 @@
+{
+  "tasks": [
+          {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe compilar archivo activo",
+            "command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+            "args": [
+      "-fdiagnostics-color=always",
+      "-g",
+      "-std=c++17",
+      "${file}",
+
+      "-IC:\\SFML-3.0.2-windows-gcc-14.2.0-mingw-64-bit\\SFML-3.0.2\\include",
+      "-LC:\\SFML-3.0.2-windows-gcc-14.2.0-mingw-64-bit\\SFML-3.0.2\\lib",
+
+      "-lsfml-graphics",
+      "-lsfml-window",
+      "-lsfml-system",
+      "-lsfml-main",
+      "-lopengl32",
+      "-lgdi32",
+      "-lws2_32",
+      "-lwinmm",
+
+      "-o",
+      "${fileDirname}\\${fileBasenameNoExtension}.exe"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ],
+  "version": "2.0.0"
+}
