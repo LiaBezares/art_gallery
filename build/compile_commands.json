@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/Fcg_proyecto/art_gallery/build",
+  "command": "C:/msys64/mingw64/bin/g++.exe  @CMakeFiles/Tappa01.dir/includes_CXX.rsp -g -o CMakeFiles/Tappa01.dir/src/tappa01.cpp.obj -c C:/Fcg_proyecto/art_gallery/src/tappa01.cpp",
+  "file": "C:/Fcg_proyecto/art_gallery/src/tappa01.cpp",
+  "output": "CMakeFiles/Tappa01.dir/src/tappa01.cpp.obj"
+}
+]
