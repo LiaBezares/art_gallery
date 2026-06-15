@@ -24,10 +24,12 @@ const char* vertexShaderSource = R"(
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec3 aNormal;
+layout (location = 3) in vec2 aTexCoord;
 
 out vec3 vertexColor;
 out vec3 FragPos; // Position of the fragment in world space
 out vec3 Normal; // Normal of the fragment in world space
+out vec2 TexCoord; // Texture coordinates
 
 uniform mat4 model;
 uniform mat4 view;
@@ -41,6 +43,7 @@ void main()
 
     Normal = mat3(transpose(inverse(model))) * aNormal; // Transform the normal to world space
 
+    TexCoord = aTexCoord; // Pass the texture coordinates to the fragment shader
     vertexColor = aColor;
 }
 )";
@@ -50,11 +53,13 @@ const char* fragmentShaderSource = R"(
 in vec3 vertexColor;
 in vec3 FragPos;
 in vec3 Normal;
+in vec2 TexCoord;
 
 out vec4 FragColor;
 
 uniform vec3 lightPos; // Position of the light source
 uniform vec3 lightColor; // Color of the light source
+uniform sampler2D ourTexture; // Texture sampler
 
 void main()
 {
@@ -66,7 +71,9 @@ void main()
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
-    vec3 finalColor = (ambient + diffuse) * vertexColor;
+    vec4 texColor = texture(ourTexture, TexCoord); // Sample the texture color
+
+    vec3 finalColor = (ambient + diffuse) * texColor.rgb * vertexColor;
     FragColor = vec4(finalColor, 1.0);
 }
 )";
@@ -111,28 +118,28 @@ struct Scene {
         float vertices[] = {
             // == Floor (Grease) ==
             // Posicion         // Colors
-            -5.0f, -1.0f, -5.0f,   0.5f, 0.5f, 0.5f,    0.0f, 1.0f, 0.0f, // Left Behind
-             5.0f, -1.0f, -5.0f,   0.5f, 0.5f, 0.5f,    0.0f, 1.0f, 0.0f, // Right Behind
-             5.0f, -1.0f,  5.0f,   0.5f, 0.5f, 0.5f,    0.0f, 1.0f, 0.0f, // Right Front
-            -5.0f, -1.0f,  5.0f,   0.5f, 0.5f, 0.5f,    0.0f, 1.0f, 0.0f,  // Left Front
+            -5.0f, -1.0f, -5.0f,   0.5f, 0.5f, 0.5f,    0.0f, 1.0f, 0.0f,   0.0f, 0.0f, // Left Behind
+             5.0f, -1.0f, -5.0f,   0.5f, 0.5f, 0.5f,    0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // Right Behind
+             5.0f, -1.0f,  5.0f,   0.5f, 0.5f, 0.5f,    0.0f, 1.0f, 0.0f,   1.0f, 1.0f, // Right Front
+            -5.0f, -1.0f,  5.0f,   0.5f, 0.5f, 0.5f,    0.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // Left Front
 
             // == Back wall (Dark blue of exhibition) ==
-            -5.0f, -1.0f, -5.0f,   0.15f, 0.2f, 0.3f,   0.0f, 0.0f, 1.0f,
-             5.0f, -1.0f, -5.0f,   0.15f, 0.2f, 0.3f,   0.0f, 0.0f, 1.0f,
-             5.0f,  3.0f, -5.0f,   0.15f, 0.2f, 0.3f,   0.0f, 0.0f, 1.0f,
-            -5.0f,  3.0f, -5.0f,   0.15f, 0.2f, 0.3f,   0.0f, 0.0f, 1.0f,
+            -5.0f, -1.0f, -5.0f,   0.15f, 0.2f, 0.3f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+             5.0f, -1.0f, -5.0f,   0.15f, 0.2f, 0.3f,   0.0f, 0.0f, 1.0f,   1.0f, 0.0f,
+             5.0f,  3.0f, -5.0f,   0.15f, 0.2f, 0.3f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+            -5.0f,  3.0f, -5.0f,   0.15f, 0.2f, 0.3f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f,
 
             // == Left wall (White) ==
-            -5.0f, -1.0f,  5.0f,   0.75f, 0.75f, 0.7f,  1.0f, 0.0f, 0.0f,
-            -5.0f, -1.0f, -5.0f,   0.75f, 0.75f, 0.7f,  1.0f, 0.0f, 0.0f,
-            -5.0f,  3.0f, -5.0f,   0.75f, 0.75f, 0.7f,  1.0f, 0.0f, 0.0f,
-            -5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,  1.0f, 0.0f, 0.0f,
+            -5.0f, -1.0f,  5.0f,   0.75f, 0.75f, 0.7f,  1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+            -5.0f, -1.0f, -5.0f,   0.75f, 0.75f, 0.7f,  1.0f, 0.0f, 0.0f,   1.0f, 0.0f,
+            -5.0f,  3.0f, -5.0f,   0.75f, 0.75f, 0.7f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+            -5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,  1.0f, 0.0f, 0.0f,   0.0f, 1.0f,
 
             // == Right wall (White) ==
-             5.0f, -1.0f, -5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,
-             5.0f, -1.0f,  5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,
-             5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,
-             5.0f,  3.0f, -5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,
+             5.0f, -1.0f, -5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+             5.0f, -1.0f,  5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+             5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+             5.0f,  3.0f, -5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
         };
 
         unsigned int indices[] = {
@@ -155,14 +162,17 @@ struct Scene {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
         // Position attribute
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
         // Color attribute
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
         // Normal attribute
-        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(6 * sizeof(float)));
         glEnableVertexAttribArray(2);
+        // Texture coordinate attribute
+        glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(9 * sizeof(float)));
+        glEnableVertexAttribArray(3);
 
         glBindVertexArray(0);
 
