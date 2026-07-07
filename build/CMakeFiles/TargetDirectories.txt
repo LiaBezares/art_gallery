@@ -1,3 +1,3 @@
-C:/Fcg_proyecto/art_gallery/build/CMakeFiles/Tappa06.dir
+C:/Fcg_proyecto/art_gallery/build/CMakeFiles/Tappa07.dir
 C:/Fcg_proyecto/art_gallery/build/CMakeFiles/edit_cache.dir
 C:/Fcg_proyecto/art_gallery/build/CMakeFiles/rebuild_cache.dir

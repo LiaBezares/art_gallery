@@ -63,11 +63,11 @@ CMAKE_BINARY_DIR = C:/Fcg_proyecto/art_gallery/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Tappa06.dir/all
+all: CMakeFiles/Tappa07.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/Tappa06.dir/codegen
+codegen: CMakeFiles/Tappa07.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -75,40 +75,40 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Tappa06.dir/clean
+clean: CMakeFiles/Tappa07.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Tappa06.dir
+# Target rules for target CMakeFiles/Tappa07.dir
 
 # All Build rule for target.
-CMakeFiles/Tappa06.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa06.dir/build.make CMakeFiles/Tappa06.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa06.dir/build.make CMakeFiles/Tappa06.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/Fcg_proyecto/art_gallery/build/CMakeFiles --progress-num=1,2 "Built target Tappa06"
-.PHONY : CMakeFiles/Tappa06.dir/all
+CMakeFiles/Tappa07.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa07.dir/build.make CMakeFiles/Tappa07.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa07.dir/build.make CMakeFiles/Tappa07.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/Fcg_proyecto/art_gallery/build/CMakeFiles --progress-num=1,2 "Built target Tappa07"
+.PHONY : CMakeFiles/Tappa07.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Tappa06.dir/rule: cmake_check_build_system
+CMakeFiles/Tappa07.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start C:/Fcg_proyecto/art_gallery/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Tappa06.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Tappa07.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:/Fcg_proyecto/art_gallery/build/CMakeFiles 0
-.PHONY : CMakeFiles/Tappa06.dir/rule
+.PHONY : CMakeFiles/Tappa07.dir/rule
 
 # Convenience name for target.
-Tappa06: CMakeFiles/Tappa06.dir/rule
-.PHONY : Tappa06
+Tappa07: CMakeFiles/Tappa07.dir/rule
+.PHONY : Tappa07
 
 # codegen rule for target.
-CMakeFiles/Tappa06.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa06.dir/build.make CMakeFiles/Tappa06.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/Fcg_proyecto/art_gallery/build/CMakeFiles --progress-num=1,2 "Finished codegen for target Tappa06"
-.PHONY : CMakeFiles/Tappa06.dir/codegen
+CMakeFiles/Tappa07.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa07.dir/build.make CMakeFiles/Tappa07.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/Fcg_proyecto/art_gallery/build/CMakeFiles --progress-num=1,2 "Finished codegen for target Tappa07"
+.PHONY : CMakeFiles/Tappa07.dir/codegen
 
 # clean rule for target.
-CMakeFiles/Tappa06.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa06.dir/build.make CMakeFiles/Tappa06.dir/clean
-.PHONY : CMakeFiles/Tappa06.dir/clean
+CMakeFiles/Tappa07.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa07.dir/build.make CMakeFiles/Tappa07.dir/clean
+.PHONY : CMakeFiles/Tappa07.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
