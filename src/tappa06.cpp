@@ -5,7 +5,7 @@
 #include "glad/gl.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "stb/stb_image.h"
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -83,6 +83,47 @@ struct Scene {
     GLuint VAO, VBO, EBO;
     GLuint modelLoc, viewLoc, projectionLoc;
     GLuint lightPosLoc, lightColorLoc;
+
+    GLuint floorTexture;
+    GLuint backWallTexture;
+    GLuint sideWallTexture;
+
+    GLuint loadTexture(const char* path) {
+        GLuint textureID;
+        glGenTextures(1, &textureID);
+
+        int width, height, nrComponents;
+
+        stbi_set_flip_vertically_on_load(true); // Flip the texture vertically
+
+        unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
+        if (data) {
+            GLenum format;
+            if (nrComponents == 1) format = GL_RED;
+            else if (nrComponents == 3) 
+                format = GL_RGB;
+            else if (nrComponents == 4) 
+                format = GL_RGBA;
+       
+
+            glBindTexture(GL_TEXTURE_2D, textureID);
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            stbi_image_free(data);
+            std::cout << "Texture loaded: " << path << std::endl;
+        }
+        else {
+            std::cerr << "Failed to load texture: " << path << std::endl;
+            stbi_image_free(data);
+        }
+        return textureID;
+    }
 
     void init() {
 
@@ -177,6 +218,10 @@ struct Scene {
         glBindVertexArray(0);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        floorTexture = loadTexture("../src/textures/WoodFloor053_1K-JPG_Color.jpg");
+        backWallTexture = loadTexture("../src/textures/Fabric023_1K-JPG_Color.jpg");
+        sideWallTexture = loadTexture("../src/textures/Plaster002_1K-JPG_Color.jpg");
     }
 
     void draw(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) {
@@ -191,10 +236,30 @@ struct Scene {
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+
+        glUniform1i(glGetUniformLocation(shaderProgram, "ourTexture"), 0); // Set the texture unit to 0
+        glActiveTexture(GL_TEXTURE0); // Activate the texture unit 0
+
+        glBindTexture(GL_TEXTURE_2D, floorTexture);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0 * sizeof(unsigned int)));
+
+        glBindTexture(GL_TEXTURE_2D, backWallTexture);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(6 * sizeof(unsigned int)));
+
+        glBindTexture(GL_TEXTURE_2D, sideWallTexture);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(12 * sizeof(unsigned int)));
+
+        glBindTexture(GL_TEXTURE_2D, sideWallTexture);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(18 * sizeof(unsigned int)));
+
+        glBindVertexArray(0);
     }
 
     void cleanup() {
+        glDeleteTextures(1, &floorTexture);
+        glDeleteTextures(1, &backWallTexture);
+        glDeleteTextures(1, &sideWallTexture);
+
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);

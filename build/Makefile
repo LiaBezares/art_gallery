@@ -117,41 +117,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Tappa05
+# Target rules for targets named Tappa06
 
 # Build rule for target.
-Tappa05: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Tappa05
-.PHONY : Tappa05
+Tappa06: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Tappa06
+.PHONY : Tappa06
 
 # fast build rule for target.
-Tappa05/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa05.dir/build.make CMakeFiles/Tappa05.dir/build
-.PHONY : Tappa05/fast
+Tappa06/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa06.dir/build.make CMakeFiles/Tappa06.dir/build
+.PHONY : Tappa06/fast
 
-src/tappa05.obj: src/tappa05.cpp.obj
-.PHONY : src/tappa05.obj
+src/tappa06.obj: src/tappa06.cpp.obj
+.PHONY : src/tappa06.obj
 
 # target to build an object file
-src/tappa05.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa05.dir/build.make CMakeFiles/Tappa05.dir/src/tappa05.cpp.obj
-.PHONY : src/tappa05.cpp.obj
+src/tappa06.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa06.dir/build.make CMakeFiles/Tappa06.dir/src/tappa06.cpp.obj
+.PHONY : src/tappa06.cpp.obj
 
-src/tappa05.i: src/tappa05.cpp.i
-.PHONY : src/tappa05.i
+src/tappa06.i: src/tappa06.cpp.i
+.PHONY : src/tappa06.i
 
 # target to preprocess a source file
-src/tappa05.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa05.dir/build.make CMakeFiles/Tappa05.dir/src/tappa05.cpp.i
-.PHONY : src/tappa05.cpp.i
+src/tappa06.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa06.dir/build.make CMakeFiles/Tappa06.dir/src/tappa06.cpp.i
+.PHONY : src/tappa06.cpp.i
 
-src/tappa05.s: src/tappa05.cpp.s
-.PHONY : src/tappa05.s
+src/tappa06.s: src/tappa06.cpp.s
+.PHONY : src/tappa06.s
 
 # target to generate assembly for a file
-src/tappa05.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa05.dir/build.make CMakeFiles/Tappa05.dir/src/tappa05.cpp.s
-.PHONY : src/tappa05.cpp.s
+src/tappa06.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Tappa06.dir/build.make CMakeFiles/Tappa06.dir/src/tappa06.cpp.s
+.PHONY : src/tappa06.cpp.s
 
 # Help Target
 help:
@@ -161,10 +161,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... Tappa05"
-	@echo "... src/tappa05.obj"
-	@echo "... src/tappa05.i"
-	@echo "... src/tappa05.s"
+	@echo "... Tappa06"
+	@echo "... src/tappa06.obj"
+	@echo "... src/tappa06.i"
+	@echo "... src/tappa06.s"
 .PHONY : help
 
 

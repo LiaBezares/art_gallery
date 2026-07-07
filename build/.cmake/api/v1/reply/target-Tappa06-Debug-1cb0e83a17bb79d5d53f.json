@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "Tappa05.exe"
+			"path" : "Tappa06.exe"
 		},
 		{
-			"path" : "Tappa05.pdb"
+			"path" : "Tappa06.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -28,13 +28,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 18,
+				"line" : 19,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 20,
+				"line" : 21,
 				"parent" : 0
 			}
 		]
@@ -87,7 +87,7 @@
 			]
 		}
 	],
-	"id" : "Tappa05::@6890427a1f51a3e7e1df",
+	"id" : "Tappa06::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -142,8 +142,8 @@
 			"id" : "OpenGL::GL::@6890427a1f51a3e7e1df"
 		}
 	],
-	"name" : "Tappa05",
-	"nameOnDisk" : "Tappa05.exe",
+	"name" : "Tappa06",
+	"nameOnDisk" : "Tappa06.exe",
 	"paths" : 
 	{
 		"build" : ".",
@@ -164,7 +164,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/tappa05.cpp",
+			"path" : "src/tappa06.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],
