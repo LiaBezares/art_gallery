@@ -73,7 +73,7 @@ void main()
 
     vec4 texColor = texture(ourTexture, TexCoord); // Sample the texture color
 
-    vec3 finalColor = (ambient + diffuse) * texColor.rgb * vertexColor;
+    vec3 finalColor = (ambient + diffuse) * texColor.rgb;
     FragColor = vec4(finalColor, 1.0);
 }
 )";
@@ -177,10 +177,10 @@ struct Scene {
             -5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,  1.0f, 0.0f, 0.0f,   0.0f, 1.0f,
 
             // == Right wall (White) ==
-             5.0f, -1.0f, -5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-             5.0f, -1.0f,  5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-             5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-             5.0f,  3.0f, -5.0f,   0.75f, 0.75f, 0.7f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+             5.0f, -1.0f, -5.0f,   0.75f, 0.75f, 0.7f,   -1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+             5.0f, -1.0f,  5.0f,   0.75f, 0.75f, 0.7f,   -1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+             5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,   -1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+             5.0f,  3.0f, -5.0f,   0.75f, 0.75f, 0.7f,   -1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
         };
 
         unsigned int indices[] = {
