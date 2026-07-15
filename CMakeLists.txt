@@ -20,9 +20,10 @@ find_package(OpenGL REQUIRED)
 # add_executable(Tappa08 src/tappa08.cpp)
 # add_executable(Tappa09 src/tappa09.cpp)
 # add_executable(Tappa10 src/tappa10.cpp)
-add_executable(Tappa11 src/tappa11.cpp)
+# add_executable(Tappa11 src/tappa11.cpp)
+add_executable(Tappa12 src/tappa12.cpp)
 
-target_link_libraries(Tappa11
+target_link_libraries(Tappa12
     PRIVATE
     SFML::Graphics
     SFML::Window 
