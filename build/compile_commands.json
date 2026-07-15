@@ -1,8 +1,8 @@
 [
 {
   "directory": "C:/Fcg_proyecto/art_gallery/build",
-  "command": "C:/msys64/mingw64/bin/g++.exe  @CMakeFiles/Tappa08.dir/includes_CXX.rsp -g -o CMakeFiles/Tappa08.dir/src/tappa08.cpp.obj -c C:/Fcg_proyecto/art_gallery/src/tappa08.cpp",
-  "file": "C:/Fcg_proyecto/art_gallery/src/tappa08.cpp",
-  "output": "CMakeFiles/Tappa08.dir/src/tappa08.cpp.obj"
+  "command": "C:/msys64/mingw64/bin/g++.exe  @CMakeFiles/Tappa09.dir/includes_CXX.rsp -g -o CMakeFiles/Tappa09.dir/src/tappa09.cpp.obj -c C:/Fcg_proyecto/art_gallery/src/tappa09.cpp",
+  "file": "C:/Fcg_proyecto/art_gallery/src/tappa09.cpp",
+  "output": "CMakeFiles/Tappa09.dir/src/tappa09.cpp.obj"
 }
 ]
