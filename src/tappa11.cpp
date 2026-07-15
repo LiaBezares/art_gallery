@@ -124,6 +124,7 @@ struct Scene {
     GLuint floorTexture;
     GLuint backWallTexture;
     GLuint sideWallTexture;
+    GLuint cellingTexture;
     std::vector<Painting> paintings;
 
     GLuint paintingVAO, paintingVBO, paintingEBO;
@@ -286,6 +287,12 @@ struct Scene {
              5.0f,  3.0f, -5.0f,   0.75f, 0.75f, 0.7f,   0.0f, -1.0f, 0.0f,   1.0f, 0.0f,
              5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,   0.0f, -1.0f, 0.0f,   1.0f, 1.0f,
             -5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,   0.0f, -1.0f, 0.0f,   0.0f, 1.0f,
+
+            // == Front wall (Cuarta pared, cierra la sala en z=5) ==
+            -5.0f, -1.0f,  5.0f,   0.75f, 0.75f, 0.7f,   0.0f, 0.0f, -1.0f,   0.0f, 0.0f,
+             5.0f, -1.0f,  5.0f,   0.75f, 0.75f, 0.7f,   0.0f, 0.0f, -1.0f,   1.0f, 0.0f,
+             5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,   0.0f, 0.0f, -1.0f,   1.0f, 1.0f,
+            -5.0f,  3.0f,  5.0f,   0.75f, 0.75f, 0.7f,   0.0f, 0.0f, -1.0f,   0.0f, 1.0f,
         };
 
         unsigned int indices[] = {
@@ -293,7 +300,8 @@ struct Scene {
             4, 5, 6,     6, 7, 4,     // Back wall
             8, 9, 10,    10, 11, 8,   // Left wall
             12, 13, 14,  14, 15, 12,   // Right wall
-            16, 17, 18,  18, 19, 16   // Ceiling
+            16, 17, 18,  18, 19, 16,  // Ceiling
+            20, 21, 22,  22, 23, 20   // Front wall
         };
 
         float paintingVertices[] = {
@@ -357,6 +365,8 @@ struct Scene {
         floorTexture = loadTexture("../src/textures/WoodFloor053_1K-JPG_Color.jpg");
         backWallTexture = loadTexture("../src/textures/Fabric023_1K-JPG_Color.jpg");
         sideWallTexture = loadTexture("../src/textures/Plaster002_1K-JPG_Color.jpg");
+        cellingTexture = loadTexture("../src/textures/Poliigon_TilesCeramicWhite_6956_BaseColor.jpg");
+
 
         GLuint texture1 = loadTexture("../src/textures/painting1.jpg");
         GLuint texture2 = loadTexture("../src/textures/painting2.jpg");
@@ -393,8 +403,11 @@ struct Scene {
         glBindTexture(GL_TEXTURE_2D, sideWallTexture);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(18 * sizeof(unsigned int)));
 
-        glBindTexture(GL_TEXTURE_2D, sideWallTexture);
+        glBindTexture(GL_TEXTURE_2D, cellingTexture);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(24 * sizeof(unsigned int)));
+
+        glBindTexture(GL_TEXTURE_2D, backWallTexture);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(30 * sizeof(unsigned int)));
 
         // --- PASO 2: DIBUJAR EL CUADRO ---
         glBindVertexArray(paintingVAO);
@@ -422,6 +435,7 @@ struct Scene {
         glDeleteTextures(1, &floorTexture);
         glDeleteTextures(1, &backWallTexture);
         glDeleteTextures(1, &sideWallTexture);
+        glDeleteTextures(1, &cellingTexture);
         glDeleteTextures(static_cast<GLsizei>(paintings.size()), reinterpret_cast<const GLuint*>(paintings.data()));
         glDeleteVertexArrays(1, &VAO);
         glDeleteVertexArrays(1, &paintingVAO);
@@ -606,7 +620,7 @@ void render()
 
 int main()
 {
-    State state(800, 600, "3D Virtual Art Gallery - Tappa 8");
+    State state(800, 600, "3D Virtual Art Gallery - Tappa 11");
 
     while (state.isRunning) // main loop
     {
