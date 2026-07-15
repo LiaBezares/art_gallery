@@ -78,6 +78,13 @@ void main()
 }
 )";
 
+struct Painting {
+    GLuint texture;
+    glm::vec3 position;
+    glm::vec3 scale;
+    float rotationY;
+};
+
 struct Scene {
     GLuint shaderProgram;
     GLuint VAO, VBO, EBO;
@@ -87,7 +94,7 @@ struct Scene {
     GLuint floorTexture;
     GLuint backWallTexture;
     GLuint sideWallTexture;
-    GLuint paintingTexture;
+    std::vector<Painting> paintings;
 
     GLuint paintingVAO, paintingVBO, paintingEBO;
 
@@ -110,6 +117,7 @@ struct Scene {
        
 
             glBindTexture(GL_TEXTURE_2D, textureID);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
             glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -195,10 +203,10 @@ struct Scene {
 
         float paintingVertices[] = {
             //Posicion         // Colors          // Normals        // Texture Coords
-            -1.5f, 0.5f, -4.9f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // Top Left
-             1.5f, 0.5f, -4.9f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   1.0f, 0.0f, // Top Right
-             1.5f, 2.0f, -4.9f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f, // Bottom Right
-            -1.5f, 2.0f, -4.9f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f,  // Bottom Left 
+            -0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // Top Left
+             0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   1.0f, 0.0f, // Top Right
+             0.5f, 0.0f,  0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f, // Bottom Right
+            -0.5f, 0.0f,  0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f,  // Bottom Left 
         };
 
         unsigned int paintingIndices[] = {
@@ -254,7 +262,14 @@ struct Scene {
         floorTexture = loadTexture("../src/textures/WoodFloor053_1K-JPG_Color.jpg");
         backWallTexture = loadTexture("../src/textures/Fabric023_1K-JPG_Color.jpg");
         sideWallTexture = loadTexture("../src/textures/Plaster002_1K-JPG_Color.jpg");
-        paintingTexture = loadTexture("../src/textures/painting.jpg");
+
+        GLuint texture1 = loadTexture("../src/textures/painting1.jpg");
+        GLuint texture2 = loadTexture("../src/textures/painting2.jpg");
+        GLuint texture3 = loadTexture("../src/textures/painting3.jpg");
+
+        paintings.push_back({ texture1, glm::vec3(0.0f, 1.7f, -4.9f), glm::vec3(2.76f, 3.5f, 1.0f), 0.0f });
+        paintings.push_back({ texture2, glm::vec3(-4.9f, 1.7f, 0.0f), glm::vec3(1.39f, 3.2f, 1.0f), 90.0f });
+        paintings.push_back({ texture3, glm::vec3(4.9f, 1.7f, 0.0f), glm::vec3(1.31f, 3.52f, 1.0f), -90.0f });
     }
 
     void draw(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) {
@@ -289,8 +304,21 @@ struct Scene {
         // --- PASO 2: DIBUJAR EL CUADRO ---
         glBindVertexArray(paintingVAO);
 
-        glBindTexture(GL_TEXTURE_2D, paintingTexture);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0 * sizeof(unsigned int)));
+        for (const auto& painting : paintings)
+        {
+            glm::mat4 paintingModel = model;
+            paintingModel = glm::translate(paintingModel, painting.position);
+
+            if (painting.rotationY != 0.0f)
+                paintingModel = glm::rotate(paintingModel, glm::radians(painting.rotationY), glm::vec3(0.0f, 1.0f, 0.0f));
+
+            paintingModel = glm::scale(paintingModel, painting.scale);
+
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(paintingModel));
+
+            glBindTexture(GL_TEXTURE_2D, painting.texture);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0 * sizeof(unsigned int)));
+        }
 
         glBindVertexArray(0);
     }
@@ -299,7 +327,7 @@ struct Scene {
         glDeleteTextures(1, &floorTexture);
         glDeleteTextures(1, &backWallTexture);
         glDeleteTextures(1, &sideWallTexture);
-        glDeleteTextures(1, &paintingTexture);
+        glDeleteTextures(static_cast<GLsizei>(paintings.size()), reinterpret_cast<const GLuint*>(paintings.data()));
         glDeleteVertexArrays(1, &VAO);
         glDeleteVertexArrays(1, &paintingVAO);
         glDeleteBuffers(1, &VBO);
