@@ -1,3 +1,0 @@
-C:/Fcg_proyecto/art_gallery/build/CMakeFiles/Tappa12.dir
-C:/Fcg_proyecto/art_gallery/build/CMakeFiles/edit_cache.dir
-C:/Fcg_proyecto/art_gallery/build/CMakeFiles/rebuild_cache.dir

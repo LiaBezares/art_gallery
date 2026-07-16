@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Fcg_proyecto/art_gallery/build",
-  "command": "C:/msys64/mingw64/bin/g++.exe  @CMakeFiles/Tappa12.dir/includes_CXX.rsp -g -o CMakeFiles/Tappa12.dir/src/tappa12.cpp.obj -c C:/Fcg_proyecto/art_gallery/src/tappa12.cpp",
-  "file": "C:/Fcg_proyecto/art_gallery/src/tappa12.cpp",
-  "output": "CMakeFiles/Tappa12.dir/src/tappa12.cpp.obj"
-}
-]
