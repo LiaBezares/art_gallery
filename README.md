@@ -21,13 +21,13 @@ Each stage compiles to its own executable, named `TappaNN` (e.g. `Tappa00`, `Tap
 On Windows:
 ```bash
 # To run Stage 00
-.\build\Tappa00.exe
+.\build\bin\Tappa00.exe
 ```
 
 On Linux/macOS:
 ```bash
 # Relative execution paths for UNIX environments:
-./build/Tappa00
+./build/bin\Tappa00
 ```
 
 ## 2. Schematic List of User Interface Controls
