@@ -15,6 +15,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+#include "rawmouse.hh"
+
 #include <vector>
 #include <string>
 #include <iostream>
@@ -465,8 +467,8 @@ struct State
     float pitch; //Vertical rotation
     float sensitivity; //Mouse sensitivity
     bool isMouseCaptured; //Flag to check if mouse is captured for camera control
+    fcg::RawMouse raw_mouse; // FCG NEW: RAW MOUSE HANDLER
 
-    
     State(unsigned w, unsigned h, std::string title, bool fullscreen = false)
         : isRunning(true),
             cameraPos(glm::vec3(0.0f, 0.0f, 3.0f)),
@@ -504,7 +506,7 @@ struct State
             return;
         }
 
-        // Fijar el viewport al tamaÃ±o real de la ventana (importante si se redimensiona despues)
+        // Fijar el viewport al tamaÃƒÂ±o real de la ventana (importante si se redimensiona despues)
         sf::Vector2u initialSize = window.getSize();
         glViewport(0, 0, static_cast<GLsizei>(initialSize.x), static_cast<GLsizei>(initialSize.y));
 
@@ -528,7 +530,7 @@ struct State
 
             if (const auto* resized = event->getIf<sf::Event::Resized>())
             {
-                // Actualizar el viewport para que coincida con el nuevo tamaÃ±o de la ventana
+                // Actualizar el viewport para que coincida con el nuevo tamaÃƒÂ±o de la ventana
                 glViewport(0, 0, static_cast<GLsizei>(resized->size.x), static_cast<GLsizei>(resized->size.y));
             }
 
@@ -539,12 +541,17 @@ struct State
                     // Alternar entre "modo camara" (raton oculto y capturado) y "modo ventana" (raton libre)
                     isMouseCaptured = !isMouseCaptured;
                     window.setMouseCursorVisible(!isMouseCaptured);
+                    // FCG NEW: MOUSE SHOULD ALSO BE GRABBED WHEN USING RAW EVENTS
+                    window.setMouseCursorGrabbed (isMouseCaptured);
 
-                    if (isMouseCaptured)
-                    {
-                        sf::Vector2u windowSize = window.getSize();
-                        sf::Mouse::setPosition(sf::Vector2i(windowSize.x / 2, windowSize.y / 2), window);
-                    }
+
+
+                    // FCG OLD: WINDOW SIZE NOW USELESS
+                    // if (isMouseCaptured)
+                    // {
+                    //     sf::Vector2u windowSize = window.getSize();
+                    //     sf::Mouse::setPosition(sf::Vector2i(windowSize.x / 2, windowSize.y / 2), window);
+                    // }
                 }
             }
 
@@ -563,6 +570,10 @@ struct State
                     isRunning = false;
                 }
             }
+
+            // FCG NEW: GET RAW MOUSE EVENTS
+            if (const auto* mouse_moved_raw = event->getIf<sf::Event::MouseMovedRaw> ())
+                raw_mouse.event (*mouse_moved_raw);
         }
     
 
@@ -592,12 +603,20 @@ struct State
         // Capture mouse movement for camera control
         if (isMouseCaptured)
         {
+
+
             sf::Vector2u windowSize = window.getSize();
             sf::Vector2i centerPos(windowSize.x / 2, windowSize.y / 2);
             sf::Vector2i currentMousePos = sf::Mouse::getPosition(window);
 
-            float xOffset = static_cast<float>(currentMousePos.x - centerPos.x);
-            float yOffset = static_cast<float>(centerPos.y - currentMousePos.y);
+            // FCG OLD: OFFSETS FROM CENTER
+            // float xOffset = static_cast<float>(currentMousePos.x - centerPos.x);
+            // float yOffset = static_cast<float>(centerPos.y - currentMousePos.y);
+
+            // FCG NEW: OFFSETS from RAW MOUSE
+            sf::Vector2f offset = raw_mouse.delta ();
+            float xOffset = offset.x;
+            float yOffset = -offset.y;
 
             if (xOffset != 0.0f || yOffset != 0.0f)
             {
@@ -620,8 +639,9 @@ struct State
                 front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
                 cameraFront = glm::normalize(front);
 
-                // Reset mouse position to the center of the window
-                sf::Mouse::setPosition(centerPos, window);
+                // FCG OLD: MOUSE WARP, NOW USELESS!
+                // // Reset mouse position to the center of the window
+                // sf::Mouse::setPosition(centerPos, window);
             }
         }
     }   

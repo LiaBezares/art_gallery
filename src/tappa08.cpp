@@ -15,6 +15,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+#include "rawmouse.hh"
+
 #include <vector>
 #include <string>
 #include <iostream>
@@ -357,6 +359,7 @@ struct State
     float pitch; //Vertical rotation
     float sensitivity; //Mouse sensitivity
     bool isMouseCaptured; //Flag to check if mouse is captured for camera control
+    fcg::RawMouse raw_mouse; // Raw mouse input handler
 
     
     State(unsigned w, unsigned h, std::string title)
@@ -393,6 +396,7 @@ struct State
         }
 
         window.setMouseCursorVisible(false); // Hide the mouse cursor
+        window.setMouseCursorGrabbed(true); // Capture the mouse cursor
 
         sf::Mouse::setPosition(sf::Vector2i(w / 2, h / 2), window); //Center the mouse cursor
 
@@ -403,7 +407,7 @@ struct State
 
     void handleEvents()
     {
-        while (window.pollEvent())
+        while (const std::optional event = window.pollEvent())
         {
             if (window.hasFocus())
             {
@@ -413,6 +417,9 @@ struct State
                     isRunning = false;
                 }
             }
+
+            if (const auto* mouse_moved_raw = event->getIf<sf::Event::MouseMovedRaw>())
+                raw_mouse.event(*mouse_moved_raw);
         }
     
 
@@ -442,12 +449,9 @@ struct State
         // Capture mouse movement for camera control
         if (isMouseCaptured)
         {
-            sf::Vector2u windowSize = window.getSize();
-            sf::Vector2i centerPos(windowSize.x / 2, windowSize.y / 2);
-            sf::Vector2i currentMousePos = sf::Mouse::getPosition(window);
-
-            float xOffset = static_cast<float>(currentMousePos.x - centerPos.x);
-            float yOffset = static_cast<float>(centerPos.y - currentMousePos.y);
+            sf::Vector2f offset = raw_mouse.delta();
+            float xOffset = offset.x;
+            float yOffset = offset.y;
 
             if (xOffset != 0.0f || yOffset != 0.0f)
             {
@@ -470,8 +474,6 @@ struct State
                 front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
                 cameraFront = glm::normalize(front);
 
-                // Reset mouse position to the center of the window
-                sf::Mouse::setPosition(centerPos, window);
             }
         }
     }   
